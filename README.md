@@ -6,4 +6,4 @@ __hoi4treesnap__ generates Hearts of Iron IV focus tree screenshots.
 4. Press "Generate image". Output will be saved next to the hoi4treesnap binary.
 
 <img src="https://i.imgur.com/1Wepd3Z.png">
-<img src="https://i.imgur.com/MKPV5Cc.png" width="800">
+<img src="https://i.imgur.com/MKPV5Cc.png">
