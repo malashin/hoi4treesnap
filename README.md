@@ -8,7 +8,7 @@ __hoi4treesnap__ generates Hearts of Iron IV focus tree screenshots.
 
 ### Possible issues:
 * The file parser is stricter then PDX one, so you might need to fix those errors if they are reported.
-* DDS decoder can only read RGBA 8.8.8.8 files, not compressed ones like DXT1 or DXT5, so you will need to save them as RGBA.
+* DDS decoder can only read RGBA 8.8.8.8 images, not compressed ones like DXT1 or DXT5, so you will need to resave them as RGBA.
 
 <img src="https://i.imgur.com/1Wepd3Z.png">
 <img src="https://i.imgur.com/MKPV5Cc.png">
