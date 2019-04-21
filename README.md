@@ -14,6 +14,7 @@ __hoi4treesnap__ generates Hearts of Iron IV focus tree screenshots.
 * You can't generate single image for shared focus trees. You'll have to combine them from separate images.
 * There is no country name in the image. Might be added later either through parsing of the files or just asking the user to input the name.
 * If focus title uses scripted localization, it will be rendered as a scripted localization string instead of the appropriate name. Might ask user to enter appropriate titles if those are found later on.
+* It is currently looking for English localisation only. It's possible to add a menu to select the lanuage later on.
 
 <img src="https://i.imgur.com/1Wepd3Z.png">
 <img src="https://i.imgur.com/MKPV5Cc.png">
