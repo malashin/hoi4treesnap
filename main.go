@@ -13,6 +13,10 @@ import (
 	_ "github.com/lukegb/dds"
 	"github.com/macroblock/imed/pkg/ptool"
 	"github.com/malashin/bmfonter"
+
+	// TGA mast be the last registered image format due to not having magic prefix.
+	// Every image file will be treated as TGA if registered magic is not found.
+	_ "github.com/ftrvxmtrx/tga"
 )
 
 var focusTreePaths, modPaths []string
