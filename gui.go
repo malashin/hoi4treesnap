@@ -288,7 +288,7 @@ func start() {
 		fontMap = make(map[string]BitmapFont)
 		locMap = make(map[string]map[string]Localisation)
 
-		// Show progress bar.
+		// Hide progress bar.
 		pBar.Hide()
 		pBar.SetValue(0)
 	}
