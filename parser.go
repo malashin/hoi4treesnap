@@ -802,12 +802,12 @@ func traverseGFX(root *ptool.TNode, path string) error {
 }
 
 func parseLoc(path string, i int) error {
-	locFiles, err := filepath.Glob(filepath.Join(path, "localisation", "*l_english.yml"))
+	locFiles, err := filepath.Glob(filepath.Join(path, "localisation", "*.yml"))
 	if err != nil {
 		return err
 	}
 
-	locReplaceFiles, err := filepath.Glob(filepath.Join(path, "localisation", "replace", "*l_english.yml"))
+	locReplaceFiles, err := filepath.Glob(filepath.Join(path, "localisation", "replace", "*.yml"))
 	if err != nil {
 		return err
 	}
@@ -820,12 +820,16 @@ func parseLoc(path string, i int) error {
 			return err
 		}
 		if stringContainsSlice(f, locList) {
-			fmt.Println(lPath)
 			if len(f) > 0 {
 				// Remove utf-8 bom if found.
 				if bytes.HasPrefix([]byte(f), utf8bom) {
 					f = string(bytes.TrimPrefix([]byte(f), utf8bom))
 				}
+				// Skip file if it contains a wrong language.
+				if !strings.HasPrefix(strings.TrimSpace(f), language) {
+					continue
+				}
+				fmt.Println(lPath)
 				node, err := yml.Parse(f)
 				if err != nil {
 					return err
