@@ -17,5 +17,9 @@ __hoi4treesnap__ generates Hearts of Iron IV focus tree screenshots.
 * If focus title uses scripted localization, it will be rendered as a scripted localization string instead of the appropriate name. Might ask user to enter appropriate titles if those are found later on.
 * It is currently looking for English localisation only. It's possible to add a menu to select the lanuage later on.
 
+### Menu:
 <img src="https://i.imgur.com/ahYgtJT.png">
+
+### Output examples:
 <img src="https://i.imgur.com/MKPV5Cc.png">
+<img src="https://i.imgur.com/8Bq71l1.png">
