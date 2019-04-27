@@ -19,8 +19,8 @@ import (
 	browser "github.com/malashin/dialog"
 )
 
-func setupUI(a fyne.App) {
-	win = a.NewWindow("TreeSnap")
+func setupUI(app fyne.App) {
+	win = app.NewWindow("TreeSnap")
 	win.SetFixedSize(true)
 	pBar = widget.NewProgressBar()
 	pBar.Hide()
@@ -30,11 +30,12 @@ func setupUI(a fyne.App) {
 			widget.NewButton("Select focus file(s)", func() { selectFocusFiles() }),
 			widget.NewButton("Select HOI4 folder", func() { selectGameFolder() }),
 			widget.NewButton("Add dependency mod folder(s)", func() { selectModFolder() }),
+			widget.NewButton("Select localisation language", func() { selectLocLanguage(app) }),
 			// widget.NewCheck("Merge selected trees", func(on bool) { mergeToggle(on) }),
 			widget.NewButton("Generate image", func() { start() }),
 			pBar,
 			widget.NewButton("Quit", func() {
-				a.Quit()
+				app.Quit()
 			}),
 		),
 	)
@@ -44,24 +45,32 @@ func setupUI(a fyne.App) {
 
 func selectFocusFiles() {
 	filename, err := browser.File().Title("National Focus File").Filter("Text file", "txt").LoadFiles()
-	if err != nil && err.Error() != "Cancelled" {
+	if err != nil {
+		if err.Error() == "Cancelled" {
+			return
+		}
 		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
 		dialog.ShowError(err, win)
 		return
 	}
 	focusTreePaths = filename
+	ansi.Println("Focus files selected:", filename)
 }
 
 func selectGameFolder() {
 	directory, err := browser.Directory().Title("HOI4 Folder").Browse()
-	if err != nil && err.Error() != "Cancelled" {
+	if err != nil {
+		if err.Error() == "Cancelled" {
+			return
+		}
 		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
 		dialog.ShowError(err, win)
 		return
 	}
 	gamePath = directory
+	ansi.Println("Game folder selected:", directory)
 	err = encodeCacheFile(gamePath, filepath.Join(binPath, "hoi4treesnapGamePath.txt"))
-	if err != nil {
+	if err != nil && err.Error() != "Cancelled" {
 		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
 		dialog.ShowError(err, win)
 		return
@@ -70,12 +79,50 @@ func selectGameFolder() {
 
 func selectModFolder() {
 	directory, err := browser.Directory().Title("Mod Folder").Browse()
-	if err != nil && err.Error() != "Cancelled" {
+	if err != nil {
+		if err.Error() == "Cancelled" {
+			return
+		}
 		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
 		dialog.ShowError(err, win)
 		return
 	}
 	modPaths = append(modPaths, directory)
+	ansi.Println("Mod folder added:", directory)
+}
+
+func selectLocLanguage(app fyne.App) {
+	w := app.NewWindow("Select localisation language")
+	w.SetFixedSize(true)
+
+	w.SetContent(
+		widget.NewVBox(
+			widget.NewRadio([]string{"English", "Brazilian Portuguese", "German", "French", "Spanish", "Polish", "Russian"}, func(s string) { handleLocLanguageChange(s, w) }),
+		),
+	)
+
+	w.Show()
+}
+
+func handleLocLanguageChange(s string, w fyne.Window) {
+	switch s {
+	case "English":
+		language = "l_english"
+	case "Brazilian Portuguese":
+		language = "l_braz_por"
+	case "German":
+		language = "l_german"
+	case "French":
+		language = "l_french"
+	case "Spanish":
+		language = "l_spanish"
+	case "Polish":
+		language = "l_polish"
+	case "Russian":
+		language = "l_russian"
+	}
+	ansi.Println("Language selected:", s)
+	w.Close()
 }
 
 func mergeToggle(on bool) {

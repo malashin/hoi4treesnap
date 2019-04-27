@@ -336,7 +336,9 @@ func initFont(fontName string) (bmfonter.Font, error) {
 
 	// Init font.
 	font, err := bmfonter.InitFont(bmfont.Fontfiles[0]+".fnt", bmfont.Fontfiles[0]+".dds")
-	return font, err
+	if err != nil {
+		return font, err
+	}
 
 	if len(bmfont.Fontfiles) > 1 {
 		for i := 1; i < len(bmfont.Fontfiles); i++ {
@@ -344,5 +346,6 @@ func initFont(fontName string) (bmfonter.Font, error) {
 			return font, err
 		}
 	}
+
 	return font, nil
 }
