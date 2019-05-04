@@ -31,8 +31,8 @@ func setupUI(app fyne.App) {
 			widget.NewButton("Select HOI4 folder", func() { selectGameFolder() }),
 			widget.NewButton("Add dependency mod folder(s)", func() { selectModFolder() }),
 			widget.NewButton("Select localisation language", func() { selectLocLanguage(app) }),
-			// widget.NewCheck("Merge selected trees", func(on bool) { mergeToggle(on) }),
 			widget.NewButton("Generate image", func() { start() }),
+			widget.NewCheck("Disable line rendering", func(on bool) { lineRenderingToggle(on) }),
 			pBar,
 			widget.NewButton("Quit", func() {
 				app.Quit()
@@ -125,11 +125,11 @@ func handleLocLanguageChange(s string, w fyne.Window) {
 	w.Close()
 }
 
-func mergeToggle(on bool) {
+func lineRenderingToggle(on bool) {
 	if on {
-		isMerge = true
+		isLineRenderingOff = true
 	} else {
-		isMerge = false
+		isLineRenderingOff = false
 	}
 }
 
@@ -283,16 +283,18 @@ func start() {
 		}
 		pBar.SetValue(pBar.Value + 0.1/i)
 
-		// Draw focus tree lines.
-		renderLines(img)
-		pBar.SetValue(pBar.Value + 0.1/i)
+		if !isLineRenderingOff {
+			// Draw focus tree lines.
+			renderLines(img)
+			pBar.SetValue(pBar.Value + 0.1/i)
 
-		// Draw exclusivity lines.
-		err = renderExclusiveLines(img)
-		if err != nil {
-			ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-			dialog.ShowError(err, win)
-			return
+			// Draw exclusivity lines.
+			err = renderExclusiveLines(img)
+			if err != nil {
+				ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
+				dialog.ShowError(err, win)
+				return
+			}
 		}
 		pBar.SetValue(pBar.Value + 0.1/i)
 

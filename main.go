@@ -21,7 +21,7 @@ import (
 
 var focusTreePaths, modPaths []string
 var gamePath, binPath string
-var running, isMerge bool
+var running, isLineRenderingOff bool
 var win fyne.Window
 var pBar *widget.ProgressBar
 
