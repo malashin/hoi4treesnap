@@ -331,7 +331,11 @@ func initFont(fontName string) (bmfonter.Font, error) {
 	var font bmfonter.Font
 	bmfont, ok := fontMap[fontName]
 	if !ok {
-		return font, fmt.Errorf("font \"" + gui.Name.Font + "\" not found")
+		return font, fmt.Errorf("font \"" + fontName + "\" not found")
+	}
+
+	if len(bmfont.Fontfiles) < 1 {
+		return font, fmt.Errorf("font \"" + fontName + "\" has no associated files")
 	}
 
 	// Init font.

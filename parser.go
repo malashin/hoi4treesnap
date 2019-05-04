@@ -789,6 +789,9 @@ func traverseGFX(root *ptool.TNode, path string) error {
 						}
 					}
 				}
+				if len(b.Fontfiles) < 1 && b.Path != "" {
+					b.Fontfiles = append(b.Fontfiles, b.Path)
+				}
 				fontMap[b.Name] = b
 			default:
 				err = traverseGFX(node, path)
