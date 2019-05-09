@@ -9,6 +9,8 @@ import (
 	"sort"
 	"strings"
 
+	"fyne.io/fyne/dialog"
+	"github.com/k0kubun/go-ansi"
 	"github.com/macroblock/imed/pkg/ptool"
 	"github.com/malashin/bmfonter"
 )
@@ -352,4 +354,13 @@ func initFont(fontName string) (bmfonter.Font, error) {
 	}
 
 	return font, nil
+}
+
+func showError(err error) {
+	ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
+	dialog.ShowError(err, win)
+	pBar.Hide()
+	pBar.SetValue(0)
+	running = false
+	return
 }

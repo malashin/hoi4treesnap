@@ -140,26 +140,23 @@ func start() {
 	running = true
 
 	var err error
-	locMap["l_english"] = make(map[string]Localisation)
+	locMap[language] = make(map[string]Localisation)
 	gfxList = append(gfxList, "GFX_focus_can_start")
 
 	switch {
 	case len(focusTreePaths) == 0:
-		ansi.Println("\x1b[31;1m" + "Focus file not selected" + "\x1b[0m")
-		dialog.ShowError(errors.New("Focus file not selected"), win)
+		showError(errors.New("Focus file not selected"))
 		return
 	case gamePath == "":
 		p := filepath.Join(binPath, "hoi4treesnapGamePath.txt")
 		if _, err = os.Stat(p); err == nil {
 			err = decodeCacheFile(&gamePath, p)
 			if err != nil {
-				ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-				dialog.ShowError(err, win)
+				showError(err)
 				return
 			}
 		} else {
-			ansi.Println("\x1b[31;1m" + "Game path not selected" + "\x1b[0m")
-			dialog.ShowError(errors.New("Game path not selected"), win)
+			showError(errors.New("Game path not selected"))
 			return
 		}
 	}
@@ -170,14 +167,12 @@ func start() {
 	// Build parsers.
 	pdx, err = ptool.NewBuilder().FromString(pdxRule).Entries("entry").Build()
 	if err != nil {
-		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-		dialog.ShowError(err, win)
+		showError(err)
 		return
 	}
 	yml, err = ptool.NewBuilder().FromString(ymlRule).Entries("entry").Build()
 	if err != nil {
-		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-		dialog.ShowError(err, win)
+		showError(err)
 		return
 	}
 
@@ -202,8 +197,7 @@ func start() {
 		// Focus tree parsing.
 		err = parseFocus(focusTreePath)
 		if err != nil {
-			ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-			dialog.ShowError(err, win)
+			showError(err)
 			return
 		}
 		pBar.SetValue(0.05)
@@ -220,8 +214,7 @@ func start() {
 		}
 		err = parseGUI(guiPath)
 		if err != nil {
-			ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-			dialog.ShowError(err, win)
+			showError(err)
 			return
 		}
 		pBar.SetValue(0.1)
@@ -230,8 +223,7 @@ func start() {
 		for _, p := range modPaths {
 			err = parseGFX(p, len(modPaths))
 			if err != nil {
-				ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-				dialog.ShowError(err, win)
+				showError(err)
 				return
 			}
 		}
@@ -240,8 +232,7 @@ func start() {
 		for _, p := range modPaths {
 			err = parseLoc(p, len(modPaths))
 			if err != nil {
-				ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-				dialog.ShowError(err, win)
+				showError(err)
 				return
 			}
 		}
@@ -271,14 +262,12 @@ func start() {
 		// Init fonts.
 		font, err = initFont(gui.Name.Font)
 		if err != nil {
-			ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-			dialog.ShowError(err, win)
+			showError(err)
 			return
 		}
 		fontTreeTitle, err = initFont(gui.NationalFocusTitle.Font)
 		if err != nil {
-			ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-			dialog.ShowError(err, win)
+			showError(err)
 			return
 		}
 		pBar.SetValue(pBar.Value + 0.1/i)
@@ -291,8 +280,7 @@ func start() {
 			// Draw exclusivity lines.
 			err = renderExclusiveLines(img)
 			if err != nil {
-				ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-				dialog.ShowError(err, win)
+				showError(err)
 				return
 			}
 		}
@@ -302,8 +290,7 @@ func start() {
 		for _, f := range focusMap {
 			err = renderFocus(img, f.X*gui.FocusSpacing.X+spacingX, f.Y*gui.FocusSpacing.Y+spacingY, f.ID)
 			if err != nil {
-				ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-				dialog.ShowError(err, win)
+				showError(err)
 				return
 			}
 		}
@@ -312,20 +299,17 @@ func start() {
 		// Save image as PNG.
 		out, err := os.Create(filepath.Join(binPath, focusTreeName+".png"))
 		if err != nil {
-			ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-			dialog.ShowError(err, win)
+			showError(err)
 			return
 		}
 		err = png.Encode(out, img)
 		if err != nil {
-			ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-			dialog.ShowError(err, win)
+			showError(err)
 			return
 		}
 		err = out.Close()
 		if err != nil {
-			ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-			dialog.ShowError(err, win)
+			showError(err)
 			return
 		}
 		ansi.Println("\x1b[33;1m" + "Image saved at \"" + filepath.Join(binPath, focusTreeName+".png") + "\"" + "\x1b[0m")
