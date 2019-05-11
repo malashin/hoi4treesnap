@@ -11,7 +11,7 @@ The tool itself does not contain any textures and picks them up from the HOI4 ba
 
 ### Possible issues:
 * The file parser is stricter then PDX one, so you might need to fix those errors if they are reported.
-* DDS decoder can only read RGBA 8.8.8.8 images, not compressed ones like DXT1 or DXT5, so you will need to resave them as RGBA.
+* DDS decoder can currently read RGBA 8.8.8.8  or RGB 8.8.8 uncompressed images, and compressed ones like DXT1, DXT3 or DXT5, other types are not supported. DXT compressed images width and height must be multiple of four. If any sort of image decoding error is returned you'd need to resave those images as the ones currently supported by the tool.
 
 ### Known issues:
 * You can't generate single image for shared focus trees. You'll have to combine them from separate images.
