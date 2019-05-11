@@ -10,9 +10,9 @@ import (
 	"fyne.io/fyne"
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/widget"
-	_ "github.com/lukegb/dds"
 	"github.com/macroblock/imed/pkg/ptool"
 	"github.com/malashin/bmfonter"
+	_ "github.com/malashin/dds"
 
 	// TGA must be the last registered image format due to not having magic prefix.
 	// Every image file will be treated as TGA if registered magic is not found.
