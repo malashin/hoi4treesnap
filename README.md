@@ -3,11 +3,12 @@ __hoi4treesnap__ generates Hearts of Iron IV focus tree screenshots.
 The tool itself does not contain any textures and picks them up from the HOI4 base game or a mod that contains selected focus trees. That includes all focus tree graphics: focus icons, focus tree plaques, focus tree lines and fonts. `nationalfocusview.gui` is being parsed to pick on your changes to it, so the output image looks quite similar to what you see in the game, even a modded one.
 
 ### How to use:
-1. Select focus tree file from `/common/national_focus`.
-2. Select Hearts of Iron IV game folder. It will be saved for later use after the first time.
-3. If you need other mods, dependencies for example, select those.
-4. If you want to use non-english localisation press `Select localisation language`.
-5. Press `Generate image`. Output will be saved next to the hoi4treesnap binary.
+1. Download and run the latest version of .exe file from https://github.com/malashin/hoi4treesnap/releases (Windows 64-bit).
+2. Select focus tree file from `/common/national_focus`.
+3. Select Hearts of Iron IV game folder. It will be saved for later use after the first time.
+4. If you need other mods, dependencies for example, select those.
+5. If you want to use non-english localisation press `Select localisation language`.
+6. Press `Generate image`. Output will be saved next to the hoi4treesnap binary.
 
 ### Possible issues:
 * The file parser is stricter then PDX one, so you might need to fix those errors if they are reported.
