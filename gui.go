@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"fyne.io/fyne"
-	"fyne.io/fyne/dialog"
 	"fyne.io/fyne/widget"
 	"github.com/k0kubun/go-ansi"
 	"github.com/macroblock/imed/pkg/ptool"
@@ -50,7 +49,7 @@ func selectFocusFiles() {
 			return
 		}
 		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-		dialog.ShowError(err, win)
+		showError(err)
 		return
 	}
 	focusTreePaths = filename
@@ -64,7 +63,7 @@ func selectGameFolder() {
 			return
 		}
 		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-		dialog.ShowError(err, win)
+		showError(err)
 		return
 	}
 	gamePath = directory
@@ -72,7 +71,7 @@ func selectGameFolder() {
 	err = encodeCacheFile(gamePath, filepath.Join(binPath, "hoi4treesnapGamePath.txt"))
 	if err != nil && err.Error() != "Cancelled" {
 		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-		dialog.ShowError(err, win)
+		showError(err)
 		return
 	}
 }
@@ -84,7 +83,7 @@ func selectModFolder() {
 			return
 		}
 		ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-		dialog.ShowError(err, win)
+		showError(err)
 		return
 	}
 	modPaths = append(modPaths, directory)

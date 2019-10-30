@@ -9,7 +9,9 @@ import (
 	"sort"
 	"strings"
 
-	"fyne.io/fyne/dialog"
+	"fyne.io/fyne"
+	"fyne.io/fyne/layout"
+	"fyne.io/fyne/widget"
 	"github.com/k0kubun/go-ansi"
 	"github.com/macroblock/imed/pkg/ptool"
 	"github.com/malashin/bmfonter"
@@ -358,7 +360,22 @@ func initFont(fontName string) (bmfonter.Font, error) {
 
 func showError(err error) {
 	ansi.Println("\x1b[31;1m" + err.Error() + "\x1b[0m")
-	dialog.ShowError(err, win)
+
+	w := fyne.CurrentApp().NewWindow("Error")
+	w.SetContent(fyne.NewContainerWithLayout(layout.NewCenterLayout(), widget.NewLabel(err.Error())))
+
+	w.SetContent(
+		widget.NewVBox(
+			widget.NewLabel(err.Error()),
+			widget.NewButton("Ok", func() { w.Close() }),
+		),
+	)
+
+	w.CenterOnScreen()
+	w.SetFixedSize(true)
+	w.Show()
+	w.RequestFocus()
+
 	pBar.Hide()
 	pBar.SetValue(0)
 	running = false

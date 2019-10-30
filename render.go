@@ -426,14 +426,14 @@ func (s *SpriteType) readTexture() error {
 			}
 		}
 
-		return fmt.Errorf(s.TextureFile + ": " + err.Error())
+		return fmt.Errorf(err.Error())
 	}
 TextureFileFound:
 	defer imgFile.Close()
 
 	s.Image, _, err = image.Decode(imgFile)
 	if err != nil {
-		return fmt.Errorf(s.TextureFile + ": " + err.Error())
+		return fmt.Errorf(err.Error())
 	}
 	return nil
 }

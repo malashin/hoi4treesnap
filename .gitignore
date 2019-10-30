@@ -12,4 +12,5 @@
 *.out
 
 *.png
+!icon.png
 hoi4treesnapGamePath.txt
