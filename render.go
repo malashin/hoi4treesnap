@@ -6,6 +6,7 @@ import (
 	"image/draw"
 	"math"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -412,9 +413,24 @@ func readTextureAndGetFrames(texture string, frame1, frame2 int) (image.Image, i
 func (s *SpriteType) readTexture() error {
 	imgFile, err := os.Open(s.TextureFile)
 	if err != nil {
+		// Try looking for the sprite in other declared mod/game folders.
+		texture := s.TextureFile
+		for _, p := range modPaths {
+			texture = strings.TrimPrefix(texture, p)
+		}
+
+		for i := len(modPaths) - 1; i >= 0; i-- {
+			imgFile, err = os.Open(filepath.Join(modPaths[i], texture))
+			if err == nil {
+				goto TextureFileFound
+			}
+		}
+
 		return fmt.Errorf(s.TextureFile + ": " + err.Error())
 	}
+TextureFileFound:
 	defer imgFile.Close()
+
 	s.Image, _, err = image.Decode(imgFile)
 	if err != nil {
 		return fmt.Errorf(s.TextureFile + ": " + err.Error())
