@@ -179,8 +179,10 @@ func traverseFocus(root *ptool.TNode) error {
 								}
 							}
 						case "available":
-							if len(link.Links) > 0 {
-								f.Available = false
+							for _, link := range link.Links {
+								if len(link.Links) > 0 {
+									f.Available = false
+								}
 							}
 						}
 					}

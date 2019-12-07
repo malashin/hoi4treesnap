@@ -26,6 +26,7 @@ func renderFocus(dst draw.Image, x, y int, id string) error {
 	if len(f.Prerequisite) == 0 && f.Available {
 		s = gfxMap["GFX_focus_can_start"]
 	}
+
 	err := renderSprite(dst, x+gui.BG.Position.X, y+gui.BG.Position.Y, gui.BG.Orientation, gui.BG.CenterPosition, s)
 	if err != nil {
 		return err
