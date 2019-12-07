@@ -77,8 +77,13 @@ func parseFocus(path string) error {
 	if err != nil {
 		return err
 	}
-	// fmt.Println(f)
+
 	if len(f) > 0 {
+		// Remove utf-8 bom if found.
+		if bytes.HasPrefix([]byte(f), utf8bom) {
+			f = string(bytes.TrimPrefix([]byte(f), utf8bom))
+		}
+
 		node, err := pdx.Parse(f)
 		if err != nil {
 			return err
@@ -195,12 +200,18 @@ func traverseFocus(root *ptool.TNode) error {
 func parseGUI(path string) error {
 	fPath := filepath.Join(path, "interface", "nationalfocusview.gui")
 	fmt.Println(fPath)
+
 	f, err := readFile(fPath)
 	if err != nil {
 		return err
 	}
-	// fmt.Println(f)
+
 	if len(f) > 0 {
+		// Remove utf-8 bom if found.
+		if bytes.HasPrefix([]byte(f), utf8bom) {
+			f = string(bytes.TrimPrefix([]byte(f), utf8bom))
+		}
+
 		node, err := pdx.Parse(f)
 		if err != nil {
 			return err
@@ -710,9 +721,15 @@ func parseGFX(path string, i int) error {
 		if err != nil {
 			return err
 		}
+
 		if stringContainsSlice(f, gfxList) {
 			fmt.Println(fPath)
 			if len(f) > 0 {
+				// Remove utf-8 bom if found.
+				if bytes.HasPrefix([]byte(f), utf8bom) {
+					f = string(bytes.TrimPrefix([]byte(f), utf8bom))
+				}
+
 				node, err := pdx.Parse(f)
 				if err != nil {
 					return err
@@ -828,17 +845,21 @@ func parseLoc(path string, i int) error {
 				if bytes.HasPrefix([]byte(f), utf8bom) {
 					f = string(bytes.TrimPrefix([]byte(f), utf8bom))
 				}
+
 				// Skip file if it contains a wrong language.
 				if !strings.HasPrefix(strings.TrimSpace(f), language) {
 					continue
 				}
+
 				fmt.Println(lPath)
+
 				node, err := yml.Parse(f)
 				if err != nil {
 					return err
 				}
 				_ = node
 				// fmt.Println(ptool.TreeToString(node, yml.ByID))
+
 				err = traverseLoc(node)
 				if err != nil {
 					return err
