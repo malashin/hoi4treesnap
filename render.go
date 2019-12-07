@@ -260,28 +260,22 @@ func renderLines(dst *image.RGBA) error {
 			y += UD.Bounds().Max.Y
 
 			// First corner (out).
-			renderFirstCorner := true
-			for _, c := range p.Children {
-				c := focusMap[c.ID]
-				if c.X == p.X && c.Y == p.Y+1 {
-					renderFirstCorner = false
-				}
-			}
-			if renderFirstCorner {
-				img = p.Out.Get()
-				draw.Draw(dst,
-					image.Rectangle{
-						image.Point{x, y},
-						image.Point{x + img.Bounds().Max.X, y + img.Bounds().Max.Y}},
-					img,
-					image.ZP,
-					draw.Over)
-			}
+			img = p.Out.Get()
+			draw.Draw(dst,
+				image.Rectangle{
+					image.Point{x, y},
+					image.Point{x + img.Bounds().Max.X, y + img.Bounds().Max.Y}},
+				img,
+				image.ZP,
+				draw.Over)
+			drawnCoords = append(drawnCoords, image.Point{x, y})
 
 			cornerXvalues := []int{x}
 			for _, c := range p.Children {
 				c := focusMap[c.ID]
-				cornerXvalues = append(cornerXvalues, c.X*gui.FocusSpacing.X+gui.NationalFocusLink.Position.X+gui.LinkBegin.X+gui.LinkOffsets.X+spacingX)
+				if c.AllowBranch {
+					cornerXvalues = append(cornerXvalues, c.X*gui.FocusSpacing.X+gui.NationalFocusLink.Position.X+gui.LinkBegin.X+gui.LinkOffsets.X+spacingX)
+				}
 			}
 
 			var isPrevSolid bool
@@ -306,6 +300,7 @@ func renderLines(dst *image.RGBA) error {
 							}
 						}
 					}
+
 					x := c.X*gui.FocusSpacing.X + gui.NationalFocusLink.Position.X + gui.LinkBegin.X + gui.LinkOffsets.X + spacingX
 
 					length := int(math.Abs(float64(c.X-p.X)))*gui.FocusSpacing.Y + gui.LinkBegin.X + gui.LinkOffsets.X + spacingX

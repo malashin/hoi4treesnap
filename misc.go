@@ -121,16 +121,19 @@ func fillFocusChildAndParentData() {
 
 	for _, p := range focusMap {
 		for i, child := range p.Children {
-
 			c := focusMap[child.ID]
+
 			if c.In == nil {
 				m := make(map[int]FocusLine)
 				c.In = m
 			}
+
 			if !c.AllowBranch {
 				continue
 			}
+
 			a := c.In[p.Y]
+
 			if child.Solid {
 				a.Set(S)
 				p.Out.Set(S)

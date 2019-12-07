@@ -176,6 +176,20 @@ func traverseFocus(root *ptool.TNode) error {
 											f.AllowBranch = false
 										}
 									}
+								case "declrScope":
+									switch strings.ToLower(link.Links[0].Value) {
+									case "not":
+										for _, link := range link.Links {
+											nodeType := pdx.ByID(link.Type)
+											switch nodeType {
+											case "declr":
+												switch strings.ToLower(link.Links[0].Value) {
+												case "has_dlc":
+													f.AllowBranch = false
+												}
+											}
+										}
+									}
 								}
 							}
 						case "available":
