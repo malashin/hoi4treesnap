@@ -236,6 +236,7 @@ func start() {
 			}
 		}
 
+		ansi.Println("\x1b[33;1m" + "Generating images:" + "\x1b[0m")
 		var i float64 = 8
 		// Replace hoi4 textures if mods has the same ones.
 		useModsTexturesIfPresent()

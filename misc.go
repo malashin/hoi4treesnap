@@ -377,7 +377,7 @@ func showError(err error) {
 	w.CenterOnScreen()
 	w.SetFixedSize(true)
 	w.Show()
-	w.RequestFocus()
+	// w.RequestFocus()
 
 	pBar.Hide()
 	pBar.SetValue(0)
