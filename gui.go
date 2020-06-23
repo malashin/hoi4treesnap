@@ -287,12 +287,24 @@ func start() {
 		pBar.SetValue(pBar.Value + 0.1/i)
 
 		// Draw focus icons.
+		var focusErrMap = make(map[string]bool)
 		for _, f := range focusMap {
 			err = renderFocus(img, f.X*gui.FocusSpacing.X+spacingX, f.Y*gui.FocusSpacing.Y+spacingY, f.ID)
+			// Save all focus icons errors into a map.
 			if err != nil {
-				showError(err)
+				focusErrMap[err.Error()] = true
+			}
+		}
+
+		// Print out all of the errors at once, popup window on the last one.
+		focusErrMapI := 0
+		for errString := range focusErrMap {
+			if focusErrMapI == len(focusErrMap)-1 {
+				showError(errors.New(errString))
 				return
 			}
+			ansi.Println("\x1b[31;1m" + errString + "\x1b[0m")
+			focusErrMapI++
 		}
 		pBar.SetValue(pBar.Value + 0.1/i)
 
@@ -312,7 +324,7 @@ func start() {
 			showError(err)
 			return
 		}
-		ansi.Println("\x1b[33;1m" + "Image saved at \"" + filepath.Join(binPath, focusTreeName+".png") + "\"" + "\x1b[0m")
+		ansi.Println("Image saved at \"" + filepath.Join(binPath, focusTreeName+".png") + "\"")
 		pBar.SetValue(1)
 
 		// Clear maps.

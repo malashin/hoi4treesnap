@@ -29,7 +29,7 @@ func renderFocus(dst draw.Image, x, y int, id string) error {
 
 	err := renderSprite(dst, x+gui.BG.Position.X, y+gui.BG.Position.Y, gui.BG.Orientation, gui.BG.CenterPosition, s)
 	if err != nil {
-		return fmt.Errorf("%q: %v", s.TextureFile, err)
+		return fmt.Errorf("%v: %v", s.TextureFile, err)
 	}
 
 	symbol, ok := gfxMap[f.Icon]
@@ -39,7 +39,7 @@ func renderFocus(dst draw.Image, x, y int, id string) error {
 
 	err = renderSprite(dst, x+gui.Symbol.Position.X, y+gui.Symbol.Position.Y, gui.Symbol.Orientation, gui.Symbol.CenterPosition, symbol)
 	if err != nil {
-		return fmt.Errorf("%q: %v", symbol.TextureFile, err)
+		return fmt.Errorf("%v: %v", symbol.TextureFile, err)
 	}
 
 	text := f.Text
