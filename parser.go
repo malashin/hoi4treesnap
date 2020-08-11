@@ -44,7 +44,7 @@ var pdxRule = `
 	digit                = '0'..'9';
 	letter               = 'a'..'z'|'A'..'Z';
 	operators            = '<'|'>';
-	symbol               = digit|letter|'_'|':'|'@'|'.'|'-'|\u0027;
+	symbol               = digit|letter|'_'|':'|'@'|'.'|'-'|'^'|\u0027;
 	stringChar           = ('\"'|anyRune);
 	empty                = '';
 `
