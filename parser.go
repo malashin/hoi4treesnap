@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -838,14 +839,17 @@ func traverseGFX(root *ptool.TNode, path string) error {
 }
 
 func parseLoc(path string, i int) error {
-	locFiles, err := filepath.Glob(filepath.Join(path, "localisation", "*.yml"))
+	locFiles, err := WalkMatchExt(filepath.Join(path, "localisation"), ".yml")
 	if err != nil {
 		return err
 	}
 
-	locReplaceFiles, err := filepath.Glob(filepath.Join(path, "localisation", "replace", "*.yml"))
-	if err != nil {
-		return err
+	var locReplaceFiles []string
+	if _, err := os.Stat(filepath.Join(path, "localisation", "replace")); os.IsExist(err) {
+		locReplaceFiles, err = WalkMatchExt(filepath.Join(path, "localisation", "replace"), ".yml")
+		if err != nil {
+			return err
+		}
 	}
 
 	locFiles = append(locFiles, locReplaceFiles...)

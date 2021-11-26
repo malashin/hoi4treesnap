@@ -3,15 +3,17 @@ package main
 import (
 	"fmt"
 	"image"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 
-	"fyne.io/fyne"
-	"fyne.io/fyne/layout"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/widget"
 	"github.com/k0kubun/go-ansi"
 	"github.com/macroblock/imed/pkg/ptool"
 	"github.com/malashin/bmfonter"
@@ -368,19 +370,40 @@ func showError(err error) {
 	w.SetContent(fyne.NewContainerWithLayout(layout.NewCenterLayout(), widget.NewLabel(err.Error())))
 
 	w.SetContent(
-		widget.NewVBox(
+		container.NewVBox(
 			widget.NewLabel(err.Error()),
 			widget.NewButton("Ok", func() { w.Close() }),
 		),
 	)
 
 	w.CenterOnScreen()
-	w.SetFixedSize(true)
 	w.Show()
-	// w.RequestFocus()
+	w.RequestFocus()
 
 	pBar.Hide()
 	pBar.SetValue(0)
 	running = false
 	return
+}
+
+func WalkMatchExt(root, ext string) ([]string, error) {
+	var match []string
+
+	err := filepath.WalkDir(root, func(s string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if filepath.Ext(d.Name()) == ext {
+			match = append(match, s)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return match, nil
 }

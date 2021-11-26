@@ -11,8 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"fyne.io/fyne"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 	"github.com/k0kubun/go-ansi"
 	"github.com/macroblock/imed/pkg/ptool"
 	browser "github.com/malashin/dialog"
@@ -20,12 +21,11 @@ import (
 
 func setupUI(app fyne.App) {
 	win = app.NewWindow("TreeSnap")
-	win.SetFixedSize(true)
 	pBar = widget.NewProgressBar()
 	pBar.Hide()
 
 	win.SetContent(
-		widget.NewVBox(
+		container.NewVBox(
 			widget.NewButton("Select focus file(s)", func() { selectFocusFiles() }),
 			widget.NewButton("Select HOI4 folder", func() { selectGameFolder() }),
 			widget.NewButton("Add dependency mod folder(s)", func() { selectModFolder() }),
@@ -39,6 +39,7 @@ func setupUI(app fyne.App) {
 		),
 	)
 
+	win.CenterOnScreen()
 	win.ShowAndRun()
 }
 
@@ -92,14 +93,14 @@ func selectModFolder() {
 
 func selectLocLanguage(app fyne.App) {
 	w := app.NewWindow("Select localisation language")
-	w.SetFixedSize(true)
 
 	w.SetContent(
-		widget.NewVBox(
-			widget.NewRadio([]string{"English", "Brazilian Portuguese", "German", "French", "Spanish", "Polish", "Russian"}, func(s string) { handleLocLanguageChange(s, w) }),
+		container.NewVBox(
+			widget.NewRadioGroup([]string{"English", "Brazilian Portuguese", "German", "French", "Spanish", "Polish", "Russian"}, func(s string) { handleLocLanguageChange(s, w) }),
 		),
 	)
 
+	w.CenterOnScreen()
 	w.Show()
 }
 
