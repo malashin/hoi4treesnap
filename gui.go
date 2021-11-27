@@ -251,6 +251,9 @@ func start() {
 		fillFocusChildAndParentData()
 		pBar.SetValue(pBar.Value + 0.1/i)
 
+		// Move coordinates of focuses so that negative values are no longer present.
+		moveAbsoluteFocusPositionsToPositiveValues()
+
 		// Create image.
 		x, y := maxFocusPos(focusMap)
 		w := (x+2)*gui.FocusSpacing.X + spacingX + 17

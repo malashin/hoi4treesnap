@@ -98,6 +98,32 @@ func fillAbsoluteFocusPositions(finished bool) bool {
 	return finished
 }
 
+func moveAbsoluteFocusPositionsToPositiveValues() {
+	lowestX := 0
+	lowestY := 0
+
+	for _, f := range focusMap {
+		if !f.AllowBranch {
+			continue
+		}
+		if f.X < lowestX {
+			lowestX = f.X
+		}
+		if f.Y < lowestY {
+			lowestY = f.Y
+		}
+	}
+
+	if lowestX < 0 || lowestY < 0 {
+		for _, f := range focusMap {
+			f.X -= lowestX
+			f.Y -= lowestY
+
+			focusMap[f.ID] = f
+		}
+	}
+}
+
 // buildFocusTree adds children data to each focus.
 // Sorts children by X coordinate from left to right.
 func fillFocusChildAndParentData() {
@@ -279,6 +305,10 @@ func containsPoint(s []image.Point, a image.Point) bool {
 // maxFocusPos returns maximum x and y values in focus tree.
 func maxFocusPos(m map[string]Focus) (x, y int) {
 	for _, f := range m {
+		if !f.AllowBranch {
+			continue
+		}
+
 		if f.X > x {
 			x = f.X
 		}
