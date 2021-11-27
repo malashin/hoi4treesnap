@@ -176,6 +176,10 @@ func traverseFocus(root *ptool.TNode) error {
 										if strings.ToLower(link.Links[1].Value) == "no" {
 											f.AllowBranch = false
 										}
+									case "has_country_flag":
+										if strings.ToLower(link.Links[1].Value) == "romanov_enabled" { // Poland tree workaround
+											f.AllowBranch = false
+										}
 									}
 								case "declrScope":
 									switch strings.ToLower(link.Links[0].Value) {

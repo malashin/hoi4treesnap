@@ -124,17 +124,18 @@ func fillFocusChildAndParentData() {
 	for _, p := range focusMap {
 		for i, child := range p.Children {
 			c := focusMap[child.ID]
-
-			if c.In == nil {
-				m := make(map[int]FocusLine)
-				c.In = m
-			}
-
 			if !c.AllowBranch {
 				continue
 			}
 
-			a := c.In[p.Y]
+			if c.In == nil {
+				c.In = make(map[int]FocusLine)
+			}
+
+			a := FocusLine{Dir: 0}
+			if val, ok := c.In[p.Y]; ok {
+				a = val
+			}
 
 			if child.Solid {
 				a.Set(S)
@@ -292,7 +293,22 @@ func fillAllowBranchData(f Focus) {
 	if !f.AllowBranch {
 		for _, child := range f.Children {
 			c := focusMap[child.ID]
-			c.AllowBranch = false
+
+			allowBranchInGroup := false
+			for _, parentGroup := range c.Prerequisite {
+				allowBranchInGroup = false
+				for _, parent := range parentGroup {
+					if focusMap[parent].AllowBranch {
+						allowBranchInGroup = true
+					}
+				}
+
+				if !allowBranchInGroup {
+					break
+				}
+			}
+
+			c.AllowBranch = allowBranchInGroup
 			focusMap[child.ID] = c
 			fillAllowBranchData(c)
 		}

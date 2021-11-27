@@ -91,6 +91,9 @@ func renderExclusiveLines(dst *image.RGBA) error {
 	OUTER:
 		for _, e1 := range f1.MutuallyExclusive {
 			f2 := focusMap[e1]
+			if !f2.AllowBranch {
+				continue
+			}
 
 			// Ignore focuses with different Y coordinates, exclusivity links are not drawn in that case.
 			// Ignore focuses on the right side of the exclusivity link. We gonna draw from the left ones.
