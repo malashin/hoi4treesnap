@@ -733,7 +733,7 @@ func traverseGUI(root *ptool.TNode) error {
 }
 
 func parseGFX(path string, i int) error {
-	gfxFiles, err := filepath.Glob(filepath.Join(path, "interface", "*.gfx"))
+	gfxFiles, err := WalkMatchExt(filepath.Join(path, "interface"), ".gfx")
 	if err != nil {
 		return err
 	}
