@@ -43,7 +43,7 @@ var pdxRule = `
 	spaces               = \x00..\x20;
 	anyRune              = \x00..$;
 	digit                = '0'..'9';
-	letter               = 'a'..'z'|'A'..'Z';
+	letter               = 'a'..'z'|'A'..'Z'|'а'..'я'|'А'..'Я'|\u00c0..\u00d6|\u00d8..\u00f6|\u00f8..\u00ff|\u0100..\u017f|\u0180..\u024f|\u0400..\u04ff|\u0500..\u052f;
 	operators            = '<'|'>';
 	symbol               = digit|letter|'_'|':'|'@'|'.'|'-'|'^'|\u0027;
 	stringChar           = ('\"'|anyRune);
@@ -67,7 +67,7 @@ var ymlRule = `
 	spaces               = \x00..\x20;
 	anyRune              = \x00..\x09|\x0b..\x0c|\x0e..$;
 	digit                = '0'..'9';
-	letter               = 'a'..'z'|'A'..'Z';
+	letter               = 'a'..'z'|'A'..'Z'|'а'..'я'|'А'..'Я'|\u00c0..\u00d6|\u00d8..\u00f6|\u00f8..\u00ff|\u0100..\u017f|\u0180..\u024f|\u0400..\u04ff|\u0500..\u052f;
 	symbol               = digit|letter|'_'|'@'|'.'|'-';
 	empty                = '';
 `
