@@ -26,7 +26,7 @@ var pdxRule = `
 
 	scope                = '{' (scopeBody|@empty) ('}'|empty);
 	scopeBody            = (@declr|@declrScope|@comparison|@list){@declr|@declrScope|@comparison|@list};
-	comment              = '#'#anyRune#{#!\x0a#!\x0d#!$#anyRune};
+	comment              = '#'#{#!\x0a#!\x0d#!$#anyRune};
 
 	int                  = ['-']digit#{#digit};
 	float                = ['-'][int]#'.'#int;
@@ -56,7 +56,7 @@ var ymlRule = `
 	entry                = @language#':' {@pair};
 
 	pair                 = @key ':' [@number] @value [@comment];
-	comment              = '#'#anyRune#{#!\x0a#!\x0d#!$#anyRune};
+	comment              = '#'#{#!\x0a#!\x0d#!$#anyRune};
 
 	language             = 'l_'#symbol#{#symbol};
 	key                  = symbol#{#symbol};
