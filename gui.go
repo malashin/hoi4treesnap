@@ -264,6 +264,7 @@ func start() {
 		pBar.SetValue(pBar.Value + 0.1/i)
 
 		// Init fonts.
+		replaceFontPathsIfNotFound()
 		font, err = initFont(gui.Name.Font)
 		if err != nil {
 			showError(err)

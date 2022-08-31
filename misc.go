@@ -382,6 +382,28 @@ func useModsTexturesIfPresent() {
 	}
 }
 
+func replaceFontPathsIfNotFound() {
+	if len(modPaths) <= 1 {
+		return
+	}
+
+	for fontName, fontBitmap := range fontMap {
+		for i, filePath := range fontBitmap.Fontfiles {
+			if _, err := os.Stat(filePath + ".fnt"); err != nil {
+				for _, modPath := range modPaths[1:] {
+					if strings.HasPrefix(filePath, modPath) {
+						filePath = filepath.Join(gamePath, strings.TrimPrefix(filePath, modPath))
+						if _, err := os.Stat(filePath + ".fnt"); err == nil {
+							fontBitmap.Fontfiles[i] = filePath
+							fontMap[fontName] = fontBitmap
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 func initFont(fontName string) (bmfonter.Font, error) {
 	var font bmfonter.Font
 	bmfont, ok := fontMap[fontName]
